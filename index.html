@@ -1,14 +1,23 @@
 <html>
-    <meta charset='utf-8'>
-    <head>
-        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/101/three.min.js"></script>
-        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/945200/OrbitControls.js"></script>
-        <script src="https://cdn.rawgit.com/mrdoob/three.js/a1fb0b5b/examples/js/controls/DragControls.js"></script>
-    </head>
-    <body>
-        <script src='threex.sportballs.js'></script>
-        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script src="tug-o-war.js" type="text/javascript"></script>
-    </body>
+<meta charset='utf-8'>
+
+<head>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <style>
+        p {
+            position: absolute;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module" src="public/build/three.module.js"> </script>
+    <script type="module" src='public/jsm/controls/FirstPersonControls.js'></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/public/robot-soccer.js"></script>
+    <div id="container">
+    </div>
+</body>
+
 </html>
