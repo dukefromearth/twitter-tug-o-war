@@ -3,19 +3,59 @@
 import * as THREE from '/client/threejs/three.module.js';
 import { FirstPersonControls } from '/client/threejs/FirstPersonControls.js';
 
-var container, controls;
-var camera, scene, renderer, light;
+var container, controls, camera, scene, renderer;
+var players = {};
+var soccer = {};
+var player = {};
+var boxGeometry = new THREE.BoxBufferGeometry(100, 100, 100);
 const clock = new THREE.Clock();
 const socket = io();
 
+
+
+class Player {
+    constructor(pos, id, color) {
+        this.player = null;
+        this.id = id;
+        this.pos = pos;
+        this.color = color;
+        this.init();
+    }
+    init() {
+        this.player = new THREE.Mesh(boxGeometry, new THREE.MeshBasicMaterial({ color: this.color }));
+        this.player.position.set(this.pos.x, this.pos.y, this.pos.z);
+        scene.add(this.player);
+    }
+
+}
+
+class Soccer {
+    constructor(scale, pos) {
+        this.ball = null;
+        this.init(scale, pos);
+    }
+    init(scale, pos) {
+        let geometry = new THREE.SphereGeometry(0.5, 32, 32);
+        let material = new THREE.MeshPhongMaterial({ color: 0xffaa00 });
+        this.ball = new THREE.Mesh(geometry, material);
+        this.ball.scale.set(scale.x, scale.y, scale.z);
+        this.ball.position.set(pos.x, pos.y, pos.z);
+        scene.add(this.ball);
+    }
+}
+
 socket.emit('new player');
+
+socket.on('state', function (state) {
+    console.log(state);
+})
 
 // Creates a scene and adds light to the scene.
 function createScene() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x87ceeb);//0xa0a0a0
-    var spotLight = new THREE.SpotLight( 0xffffff );
-    spotLight.position.set( 0, 1000, 0 );
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(0, 1000, 0);
     spotLight.castShadow = true;
     spotLight.decay = 0.9;
     spotLight.penumbra = 0.99;
@@ -76,6 +116,8 @@ function init() {
     createGround();
     createRenderer();
     createControls();
+    // soccer = new Soccer({ x: 20, y: 20, z: 20 }, { x: 0, y: 10, z: 0 });
+    player = new Player({ x: 0, y: 50, z: 0 }, 1, 'red');
 }
 
 function animate() {
